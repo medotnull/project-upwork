@@ -13,8 +13,37 @@ const UserSignupSchema = z.object({
     hourlyRate: z.number()
         .positive("Hourly rate must be positive")
         .optional(),
-})
+});
+
+const UserLoginSchema = z.object({
+    email: z.email("Invalid email format").toLowerCase(),
+    password: z.string().min(1)
+});
+
+const UserResponseSchema = z.object({
+    id: z.string(),
+    name: z.string(),
+    email: z.email(),
+    role: z.enum(['client', 'freelancer']),
+    bio: z.string().nullable(),
+    skills: z.array(z.string()).default([]),
+    hourlyRate: z.number().nullable
+});
+
+const LoginResponseSchema = z.object({
+    token: z.string(),
+    user: z.object({
+        id: z.string(),
+        name: z.string(),
+        email: z.email(),
+        role: z.enum(['client', 'freelancer'])
+    })
+});
+
 
 module.exports = {
-    UserSignupSchema
+    UserSignupSchema,
+    UserLoginSchema,
+    UserResponseSchema,
+    LoginResponseSchema
 }
